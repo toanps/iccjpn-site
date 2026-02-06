@@ -1,0 +1,9 @@
+# ICC JAPAN robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://iccjpn.com/sitemap.xml
+
+# Crawl-delay (optional - be nice to servers)
+Crawl-delay: 10

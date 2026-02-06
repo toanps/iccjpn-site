@@ -1,0 +1,8 @@
+# Cloudflare Pages Redirects
+# https://developers.cloudflare.com/pages/platform/redirects/
+
+# Redirect www to non-www (backup if not using Cloudflare redirect rules)
+# Note: This may not work on Cloudflare Pages - use Redirect Rules instead
+
+# Redirect old Google Sites pages if needed
+# /old-page  /  301
