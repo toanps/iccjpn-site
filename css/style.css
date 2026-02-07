@@ -345,10 +345,23 @@ ul, ol {
     margin-top: 0.25rem;
 }
 
+.hero-image {
+    margin: var(--spacing-xl) 0;
+    padding: var(--spacing-lg);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(5px);
+}
+
+.hero-image img {
+    border-radius: var(--radius-md);
+}
+
 .hero-cta {
     display: flex;
     gap: var(--spacing-sm);
     flex-wrap: wrap;
+    margin-bottom: var(--spacing-xl);
 }
 
 /* --------------------------------------------------------------------------
