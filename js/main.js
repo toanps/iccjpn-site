@@ -4,6 +4,21 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Show success message if redirected after form submission
+    if (window.location.search.includes('success=true')) {
+        var successDiv = document.getElementById('formSuccess');
+        var form = document.getElementById('contactForm');
+        if (successDiv) successDiv.style.display = 'block';
+        if (form) form.style.display = 'none';
+        // Scroll to contact section
+        var contactSection = document.getElementById('contact');
+        if (contactSection) {
+            setTimeout(function() {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        }
+    }
+    
     // ==========================================================================
     // Mobile Navigation
     // ==========================================================================
@@ -136,13 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             }
             
-            // If using Formspree or similar service, the form will submit naturally
-            // For local testing, prevent and show success message
-            const action = contactForm.getAttribute('action');
-            if (action && action.includes('YOUR_FORM_ID')) {
-                e.preventDefault();
-                alert('お問い合わせフォームを設定してください。Formspreeなどのサービスを利用するか、サーバーサイドの処理を実装してください。');
-            }
+            // Netlify Forms handles submission natively
+            // Form will POST and redirect via Netlify
         });
         
         // Clear error styling on input
