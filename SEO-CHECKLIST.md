@@ -9,7 +9,7 @@
 | Title タグ | ✅ | `ベトナム人材紹介・採用支援 \| 株式会社ICC JAPAN【大阪】` |
 | Meta Description | ✅ | 200文字以内、キーワード含む |
 | Meta Keywords | ✅ | 主要キーワード10個 |
-| Canonical URL | ✅ | `https://iccjpn.com/` |
+| Canonical URL | ✅ | 全ページに設定済み |
 | Robots | ✅ | `index, follow` |
 | Viewport | ✅ | レスポンシブ対応 |
 | Charset | ✅ | UTF-8 |
@@ -28,22 +28,15 @@
 - ✅ N3日本語
 - ✅ 外国人労働者
 
-#### LSIキーワード（関連語）
-- ✅ 採用支援
-- ✅ 在留資格
-- ✅ 成功報酬
-- ✅ 紹介実績
-- ✅ 定着率
-
 ### 🏢 構造化データ (Schema.org)
 
-| スキーマタイプ | 状態 | 用途 |
-|---------------|------|------|
-| Organization | ✅ | 会社情報 |
-| EmploymentAgency | ✅ | 人材紹介業 |
-| PostalAddress | ✅ | 住所情報 |
-| ContactPoint | ✅ | 連絡先 |
-| OpeningHours | ✅ | 営業時間 |
+| スキーマタイプ | 状態 |
+|---------------|------|
+| Organization | ✅ |
+| EmploymentAgency | ✅ |
+| PostalAddress | ✅ |
+| ContactPoint | ✅ |
+| OpeningHours | ✅ |
 
 ### 📱 ソーシャルメディア最適化
 
@@ -51,7 +44,7 @@
 |------|------|
 | Open Graph (Facebook) | ✅ |
 | Twitter Cards | ✅ |
-| OG Image | ⚠️ 画像ファイルを追加必要 |
+| OG Image (1200×630) | ✅ 生成済み |
 
 ### 🔗 技術的SEO
 
@@ -59,91 +52,48 @@
 |------|------|
 | robots.txt | ✅ |
 | sitemap.xml | ✅ |
-| HTTPs | ✅ (Cloudflare) |
+| HTTPS | ✅ (Cloudflare Pages) |
 | モバイル対応 | ✅ |
-| ページ速度 | ✅ (軽量CSS/JS) |
+| ページ速度 | ✅ |
+
+### 📊 アナリティクス・フォーム
+
+| 項目 | 状態 |
+|------|------|
+| Google Analytics 4 | ⚠️ プレースホルダー設置済み（測定ID要設定） |
+| お問い合わせフォーム | ⚠️ Formspree 設定待ち（YOUR_FORM_ID を要置換） |
+| スパム対策 (honeypot) | ✅ |
+| 送信成功メッセージ | ✅ |
 
 ---
 
-## 📋 デプロイ後のTODO
+## 🚀 オーナー向け残作業 (Remaining Actions for Owner)
 
 ### 必須タスク
 
-- [ ] **Google Search Console 設定**
-  1. プロパティ追加: `https://iccjpn.com`
+- [ ] **Google Analytics 4 設定**
+  1. https://analytics.google.com → Admin → Data Streams で測定ID取得
+  2. 全HTMLファイル（index.html, faq.html, news.html）の `G-XXXXXXXXXX` を実際のIDに置換
+
+- [ ] **Google Search Console 登録**
+  1. https://search.google.com/search-console でプロパティ追加: `https://iccjpn.com`
   2. 所有権確認（DNS または HTMLタグ）
-  3. サイトマップ送信: `sitemap.xml`
+  3. サイトマップ送信: `https://iccjpn.com/sitemap.xml`
 
-- [ ] **Google Analytics 設定**
-  1. GA4 プロパティ作成
-  2. 測定IDを `index.html` に追加
+- [ ] **Google ビジネスプロフィール登録**
+  1. https://www.google.com/business/ で登録
+  2. 地域検索（「人材紹介 大阪」等）で上位表示に効果大
 
-- [ ] **お問い合わせフォーム設定**
-  1. Formspree アカウント作成
-  2. フォームID取得
-  3. `index.html` の action 属性を更新
+- [ ] **Cloudflare Pages デプロイ**
+  1. Cloudflare Pages に GitHub 連携でデプロイ（DEPLOYMENT_EN.md 参照）
+  2. Formspree（https://formspree.io）でフォーム作成 → YOUR_FORM_ID を置換
+
 
 ### 推奨タスク
 
-- [ ] **OG画像作成**
-  - サイズ: 1200x630px
-  - ファイル: `/images/og-image.jpg`
-  - 内容: 会社ロゴ + キャッチコピー
-
-- [ ] **会社ロゴ作成**
-  - SVG形式推奨
-  - ファイル: `/images/logo.svg`
-
-- [ ] **写真追加**
-  - オフィス写真: `/images/office.jpg`
-  - スタッフ写真（許可あれば）
-  - 紹介実績イメージ
-
----
-
-## 🎯 追加SEO施策（推奨）
-
-### 短期（1-2週間）
-
-1. **Google ビジネスプロフィール登録**
-   - https://www.google.com/business/
-   - 地域検索で上位表示
-
-2. **業界ディレクトリ登録**
-   - 人材紹介会社一覧サイト
-   - 大阪の企業ディレクトリ
-
-3. **サイト速度チェック**
-   - [PageSpeed Insights](https://pagespeed.web.dev/)
-   - [GTmetrix](https://gtmetrix.com/)
-
-### 中期（1-3ヶ月）
-
-1. **コンテンツマーケティング**
-   - ブログページ追加（/blog/）
-   - 記事例:
-     - 「ベトナム人エンジニアを採用するメリット」
-     - 「特定技能と技能実習の違い」
-     - 「外国人採用の手続きガイド」
-
-2. **事例・お客様の声ページ**
-   - 採用成功事例
-   - 企業の声（許可取得後）
-
-3. **FAQ ページ**
-   - よくある質問
-   - FAQ Schema 追加
-
-### 長期（3-6ヶ月）
-
-1. **バックリンク獲得**
-   - 業界メディア掲載
-   - プレスリリース配信
-   - 関連企業との相互リンク
-
-2. **多言語対応**
-   - ベトナム語ページ追加
-   - 英語ページ追加
+- [ ] 会社ロゴ画像の追加（`/images/logo.png`）
+- [ ] オフィス写真の追加（`/images/office.jpg`）
+- [ ] PageSpeed Insights でパフォーマンス確認
 
 ---
 
@@ -163,39 +113,3 @@
 - 1ヶ月目: 100 セッション/月
 - 3ヶ月目: 500 セッション/月
 - 6ヶ月目: 1,000 セッション/月
-
-### コンバージョン目標
-
-- お問い合わせ: 5件/月
-- 電話問い合わせ: 3件/月
-
----
-
-## 🔧 SEOツール（無料）
-
-| ツール | 用途 | URL |
-|-------|------|-----|
-| Google Search Console | 検索パフォーマンス | search.google.com/search-console |
-| Google Analytics | トラフィック分析 | analytics.google.com |
-| PageSpeed Insights | ページ速度 | pagespeed.web.dev |
-| Rich Results Test | 構造化データ確認 | search.google.com/test/rich-results |
-| Mobile-Friendly Test | モバイル対応確認 | search.google.com/test/mobile-friendly |
-
----
-
-## 📝 定期メンテナンス
-
-### 月次
-- [ ] Search Console でエラー確認
-- [ ] ランキング変動チェック
-- [ ] お問い合わせ数確認
-
-### 四半期
-- [ ] コンテンツ更新（実績数など）
-- [ ] 競合サイト分析
-- [ ] キーワード見直し
-
-### 年次
-- [ ] サイト全体リニューアル検討
-- [ ] 年間実績更新
-- [ ] 構造化データ更新
