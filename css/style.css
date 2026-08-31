@@ -1400,12 +1400,12 @@ ul, ol {
     background: var(--bg-light);
 }
 
-/* Keep the first section below the fixed ICC header. */
-.haken-preview-page main {
-    margin-top: 70px;
+/* Preview page uses its own static header, so no fixed-header overlap is possible. */
+.haken-preview-page .header {
+    position: static;
 }
 
-.haken-preview-hero { padding: 150px 0 75px; color: var(--color-white); background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); }
+.haken-preview-hero { padding: var(--spacing-xxl) 0 var(--spacing-xl); color: var(--color-white); background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); }
 .haken-preview-hero h1 { display: block; position: relative; z-index: 1; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.45; margin-bottom: var(--spacing-md); color: var(--color-white); }
 .haken-preview-hero h1 span { display: inline-block; color: var(--color-accent); text-shadow: 0 2px 4px rgba(0, 0, 0, .35); }
 .haken-preview-hero p { font-size: 1.15rem; }
@@ -1464,7 +1464,7 @@ ul, ol {
     :root {
         --container-padding: 1rem;
     }
-    .haken-preview-hero { padding: 120px 0 55px; }
+    .haken-preview-hero { padding: var(--spacing-xl) 0 var(--spacing-lg); }
     .haken-audience-grid, .haken-field-grid, .haken-strength-list { grid-template-columns: 1fr; }
     .haken-strengths { padding: var(--spacing-lg); }
     
