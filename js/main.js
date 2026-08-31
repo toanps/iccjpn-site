@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
         function updateDevMode() {
             document.body.classList.toggle('dev-mode-on', devModeEnabled);
             devModeToggle.setAttribute('aria-pressed', String(devModeEnabled));
+            hakenContent.hidden = !devModeEnabled;
+            hakenComingSoon.hidden = devModeEnabled;
             if (devModeText) devModeText.textContent = devModeEnabled ? 'Dev Mode ON' : 'Dev Mode OFF';
         }
 

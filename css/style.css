@@ -1399,7 +1399,7 @@ ul, ol {
 .haken-preview-page {
     background: var(--bg-light);
     /* Keep the fixed site header from covering the preview content. */
-    padding-top: 70px;
+    padding-top: 110px;
 }
 
 .dev-mode-control { display: flex; align-items: center; gap: var(--spacing-sm); }
@@ -1410,7 +1410,7 @@ ul, ol {
 .dev-mode-dot { width: .55rem; height: .55rem; border-radius: var(--radius-full); background: var(--color-gray-400); }
 .dev-mode-on .dev-mode-dot { background: #2e7d32; }
 .dev-mode-on .dev-mode-toggle { border-color: #2e7d32; color: #2e7d32; }
-.haken-preview-hero { padding: 85px 0 75px; color: var(--color-white); background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); }
+.haken-preview-hero { padding: 120px 0 75px; color: var(--color-white); background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); }
 .haken-preview-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.35; margin-bottom: var(--spacing-md); }
 .haken-preview-hero h1 span { color: var(--color-accent); }
 .haken-preview-hero p { font-size: 1.15rem; }
@@ -1418,6 +1418,7 @@ ul, ol {
 .haken-eyebrow { color: var(--color-primary); font-size: .78rem; font-weight: 700; letter-spacing: .12em; margin-bottom: .5rem; }
 .haken-preview-hero .haken-eyebrow { color: var(--color-accent); }
 .haken-coming-soon { padding: 5rem 0; text-align: center; }
+.haken-coming-soon[hidden], .haken-content[hidden] { display: none; }
 .haken-coming-soon h2 { color: var(--color-dark); font-size: 2rem; margin-bottom: var(--spacing-sm); }
 .haken-content { display: none; padding: var(--spacing-xxl) 0; }
 .dev-mode-on .haken-coming-soon { display: none; }
@@ -1475,7 +1476,8 @@ ul, ol {
     }
     .dev-mode-control { margin-left: auto; }
     .dev-mode-label { display: none; }
-    .haken-preview-hero { padding: 65px 0 55px; }
+    .haken-preview-page { padding-top: 95px; }
+    .haken-preview-hero { padding: 95px 0 55px; }
     .haken-audience-grid, .haken-field-grid, .haken-strength-list { grid-template-columns: 1fr; }
     .haken-strengths { padding: var(--spacing-lg); }
     
