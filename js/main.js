@@ -3,6 +3,32 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    // Private Haken preview: persist the team review state across refreshes.
+    const devModeToggle = document.getElementById('devModeToggle');
+    const hakenContent = document.getElementById('hakenContent');
+    const hakenComingSoon = document.getElementById('hakenComingSoon');
+    const devModeText = document.getElementById('devModeText');
+
+    if (devModeToggle && hakenContent && hakenComingSoon) {
+        let devModeEnabled = false;
+        try {
+            devModeEnabled = localStorage.getItem('iccjpn-haken-dev-mode') === 'true';
+        } catch (error) { /* Storage may be disabled; default to OFF. */ }
+
+        function updateDevMode() {
+            document.body.classList.toggle('dev-mode-on', devModeEnabled);
+            devModeToggle.setAttribute('aria-pressed', String(devModeEnabled));
+            if (devModeText) devModeText.textContent = devModeEnabled ? 'Dev Mode ON' : 'Dev Mode OFF';
+        }
+
+        devModeToggle.addEventListener('click', function() {
+            devModeEnabled = !devModeEnabled;
+            try { localStorage.setItem('iccjpn-haken-dev-mode', String(devModeEnabled)); } catch (error) { /* Continue for this session. */ }
+            updateDevMode();
+        });
+        updateDevMode();
+    }
     
     // Show success message if redirected after form submission
     if (window.location.search.includes('success=true')) {
