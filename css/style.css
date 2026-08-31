@@ -1405,6 +1405,11 @@ ul, ol {
     position: static;
 }
 
+/* Extra clearance requested for the preview page content section. */
+.haken-preview-page main {
+    margin-top: 200px;
+}
+
 .haken-preview-hero { padding: var(--spacing-xxl) 0 var(--spacing-xl); color: var(--color-white); background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); }
 .haken-preview-hero h1 { display: block; position: relative; z-index: 1; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.45; margin-bottom: var(--spacing-md); color: var(--color-white); }
 .haken-preview-hero h1 span { display: inline-block; color: var(--color-accent); text-shadow: 0 2px 4px rgba(0, 0, 0, .35); }
