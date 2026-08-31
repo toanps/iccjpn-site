@@ -1403,8 +1403,8 @@ ul, ol {
 }
 
 .haken-preview-hero { padding: 150px 0 75px; color: var(--color-white); background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); }
-.haken-preview-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.35; margin-bottom: var(--spacing-md); }
-.haken-preview-hero h1 span { color: var(--color-accent); }
+.haken-preview-hero h1 { display: block; position: relative; z-index: 1; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.45; margin-bottom: var(--spacing-md); color: var(--color-white); }
+.haken-preview-hero h1 span { display: inline-block; color: var(--color-accent); text-shadow: 0 2px 4px rgba(0, 0, 0, .35); }
 .haken-preview-hero p { font-size: 1.15rem; }
 .haken-hero-en { margin-top: .75rem; color: rgba(255,255,255,.72); font-size: .95rem !important; }
 .haken-eyebrow { color: var(--color-primary); font-size: .78rem; font-weight: 700; letter-spacing: .12em; margin-bottom: .5rem; }
