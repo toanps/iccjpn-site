@@ -1405,8 +1405,8 @@ ul, ol {
     position: static;
 }
 
-/* Extra clearance requested for the preview page content section. */
-.haken-preview-page main {
+/* Extra clearance requested for the preview hero section. */
+.haken-preview-hero {
     margin-top: 200px;
 }
 
