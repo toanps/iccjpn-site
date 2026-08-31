@@ -1398,8 +1398,11 @@ ul, ol {
    -------------------------------------------------------------------------- */
 .haken-preview-page {
     background: var(--bg-light);
-    /* The shared header is fixed; leave a generous review-page clearance. */
-    padding-top: 260px;
+}
+
+/* Keep the first section below the fixed ICC header. */
+.haken-preview-page main {
+    margin-top: 70px;
 }
 
 .haken-preview-hero { padding: 150px 0 75px; color: var(--color-white); background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); }
@@ -1461,7 +1464,6 @@ ul, ol {
     :root {
         --container-padding: 1rem;
     }
-    .haken-preview-page { padding-top: 235px; }
     .haken-preview-hero { padding: 120px 0 55px; }
     .haken-audience-grid, .haken-field-grid, .haken-strength-list { grid-template-columns: 1fr; }
     .haken-strengths { padding: var(--spacing-lg); }
