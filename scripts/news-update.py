@@ -27,7 +27,7 @@ SITE_ROOT = Path(os.environ.get("ICC_SITE_ROOT", Path.home() / "projects/iccjpn-
 NEWS_HTML = SITE_ROOT / "news.html"
 LLM_URL = os.environ.get("ICC_NEWS_LLM_URL", "http://127.0.0.1:20128/v1/chat/completions")
 LLM_KEY = os.environ.get("ICC_NEWS_LLM_KEY", "not-needed")
-MODEL = os.environ.get("ICC_NEWS_MODEL", "bestmay")
+MODEL = os.environ.get("ICC_NEWS_MODEL", "gemini/gemini-3.7-flash")
 MAX_ITEMS_TOTAL = int(os.environ.get("ICC_NEWS_MAX_TOTAL_KEEP", "20"))
 MAX_NEW_PER_RUN = int(os.environ.get("ICC_NEWS_MAX_NEW_PER_RUN", "3"))
 # Max age a news item can have (months). Applied to NEW items only — historical
@@ -53,8 +53,8 @@ def months_ago(ym: tuple[int, int], now: datetime | None = None) -> int:
 
 
 def call_llm(system: str, user: str, *, temperature: float = 0.3,
-             max_tokens: int = 4000, retries: int = 3,
-             timeout: int = 600) -> str:
+             max_tokens: int = 4000, retries: int = 2,
+             timeout: int = 240) -> str:
     payload = {
         "model": MODEL,
         "temperature": temperature,
@@ -169,8 +169,8 @@ def synthesise_news(research_raw: dict) -> list[dict]:
     for src, items in (research_raw.get("sources") or {}).items():
         if not isinstance(items, list):
             continue
-        trimmed[src] = items[:20]
-    data_text = json.dumps(trimmed, ensure_ascii=False, indent=1)[:30000]
+        trimmed[src] = items[:10]
+    data_text = json.dumps(trimmed, ensure_ascii=False, indent=1)[:12000]
 
     now = datetime.now()
     cutoff_year = now.year
@@ -210,9 +210,12 @@ def synthesise_news(research_raw: dict) -> list[dict]:
     )
     parsed = None
     last_err: Exception | None = None
-    for attempt in range(3):
+    synthesis_started = time.monotonic()
+    for attempt in range(2):
         try:
-            raw = call_llm(system, user, temperature=0.3, max_tokens=4000)
+            raw = call_llm(
+                system, user, temperature=0.3, max_tokens=2000, retries=1
+            )
             if not raw.strip():
                 raise ValueError("empty LLM response")
             parsed = parse_json_loose(raw)
@@ -220,14 +223,20 @@ def synthesise_news(research_raw: dict) -> list[dict]:
                 raise ValueError(
                     f"LLM returned non-list output: {type(parsed).__name__}"
                 )
+            print(
+                f"[icc-news] synthesis took "
+                f"{int(time.monotonic() - synthesis_started)}s",
+                file=sys.stderr,
+            )
             break
         except Exception as exc:  # noqa: BLE001
             last_err = exc
-            print(f"[news-update] LLM parse attempt {attempt + 1}/3 failed: "
+            print(f"[news-update] LLM parse attempt {attempt + 1}/2 failed: "
                   f"{exc}", file=sys.stderr)
-            time.sleep(2)
+            if attempt == 0:
+                time.sleep(2)
     if parsed is None:
-        raise RuntimeError(f"LLM synthesis failed 3× — last error: {last_err}")
+        raise RuntimeError(f"LLM synthesis failed 2× — last error: {last_err}")
 
     cleaned: list[dict] = []
     dropped_old = 0

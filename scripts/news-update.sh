@@ -41,22 +41,43 @@ mkdir -p "$OUTPUT_DIR"
 # Angles tuned for ICC JAPAN's audience: Japanese SMEs hiring foreign workers.
 # Mix of Japanese (targets domestic news sources) and English (broader context).
 ANGLES="外国人労働者 日本 法改正 最新|育成就労制度 2026|特定技能 制度変更|\
-外国人雇用 助成金 最新|外国人材 中小企業 導入事例|\
-ベトナム人 労働者 日本 ニュース|\
-immigration law Japan 2026 foreign workers|\
-technical intern training Japan policy update"
-
-TS="$(date -u +%Y%m%d_%H%M%S)"
-JSON_OUT="$OUTPUT_DIR/research_${TS}.json"
+外国人雇用 助成金 最新|\
+immigration law Japan 2026 foreign workers"
 
 echo "[icc-news] $(date '+%F %T') starting weekly update" >&2
 echo "[icc-news] angles: $(echo "$ANGLES" | tr '|' '\n' | wc -l | tr -d ' ') queries" >&2
 
-RESEARCH_COUNT="${ICC_NEWS_RESEARCH_COUNT:-6}"
-RESEARCH_TIMEOUT_SECONDS="${ICC_NEWS_RESEARCH_TIMEOUT_SECONDS:-420}"
+RESEARCH_COUNT="${ICC_NEWS_RESEARCH_COUNT:-4}"
+RESEARCH_TIMEOUT_SECONDS="${ICC_NEWS_RESEARCH_TIMEOUT_SECONDS:-240}"
 
-set +e
-python3 - "$RESEARCH_TIMEOUT_SECONDS" "$RESEARCH_SH" "$ANGLES" "$RESEARCH_COUNT" "$OUTPUT_DIR" "$DISCORD_FLAG" <<'PY'
+RECENT_RESEARCH="$(python3 - "$OUTPUT_DIR" <<'PY'
+import os
+import sys
+import time
+
+output_dir = sys.argv[1]
+cutoff = time.time() - 12 * 60 * 60
+candidates = []
+for name in os.listdir(output_dir):
+    if not (name.startswith("research_") and name.endswith(".json")):
+        continue
+    path = os.path.join(output_dir, name)
+    try:
+        mtime = os.path.getmtime(path)
+    except OSError:
+        continue
+    if mtime >= cutoff:
+        candidates.append((mtime, path))
+if candidates:
+    print(max(candidates)[1])
+PY
+)"
+if [[ -n "$RECENT_RESEARCH" ]]; then
+  LATEST="$RECENT_RESEARCH"
+  echo "[icc-news] reusing recent research output: $LATEST" >&2
+else
+  set +e
+  python3 - "$RESEARCH_TIMEOUT_SECONDS" "$RESEARCH_SH" "$ANGLES" "$RESEARCH_COUNT" "$OUTPUT_DIR" "$DISCORD_FLAG" <<'PY'
 import subprocess
 import sys
 
@@ -77,18 +98,19 @@ except subprocess.TimeoutExpired:
     print(f"[icc-news] ERROR: research collection timed out after {timeout_s}s", file=sys.stderr)
     raise SystemExit(124)
 PY
-rc=$?
-set -e
-if [[ $rc -ne 0 ]]; then
-  echo "[icc-news] ERROR: research collection failed or timed out (rc=$rc, timeout=${RESEARCH_TIMEOUT_SECONDS}s)" >&2
-  exit "$rc"
-fi
+  rc=$?
+  set -e
+  if [[ $rc -ne 0 ]]; then
+    echo "[icc-news] ERROR: research collection failed or timed out (rc=$rc, timeout=${RESEARCH_TIMEOUT_SECONDS}s)" >&2
+    exit "$rc"
+  fi
 
-# research-cli.sh writes research_YYYYMMDD_HHMMSS.json — find the newest one.
-LATEST="$(ls -1t "$OUTPUT_DIR"/research_*.json 2>/dev/null | head -1)"
-if [[ -z "$LATEST" ]]; then
-  echo "[icc-news] ERROR: deep-research produced no JSON output" >&2
-  exit 1
+  # research-cli.sh writes research_YYYYMMDD_HHMMSS.json — find the newest one.
+  LATEST="$(ls -1t "$OUTPUT_DIR"/research_*.json 2>/dev/null | head -1)"
+  if [[ -z "$LATEST" ]]; then
+    echo "[icc-news] ERROR: deep-research produced no JSON output" >&2
+    exit 1
+  fi
 fi
 echo "[icc-news] research output: $LATEST" >&2
 
