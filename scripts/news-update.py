@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-news-update.py — Take a deep-research JSON output, ask 9router/bestmay to produce
+news-update.py — Take a deep-research JSON output, ask 9router (crow default: coder) to produce
 fresh ICC-JAPAN news items, then inject them into a single flat date-sorted
 list at ~/projects/iccjpn-site/news.html.
 
@@ -27,7 +27,8 @@ SITE_ROOT = Path(os.environ.get("ICC_SITE_ROOT", Path.home() / "projects/iccjpn-
 NEWS_HTML = SITE_ROOT / "news.html"
 LLM_URL = os.environ.get("ICC_NEWS_LLM_URL", "http://127.0.0.1:20128/v1/chat/completions")
 LLM_KEY = os.environ.get("ICC_NEWS_LLM_KEY", "not-needed")
-MODEL = os.environ.get("ICC_NEWS_MODEL", "gemini/gemini-3.7-flash")
+MODEL = os.environ.get("ICC_NEWS_MODEL", "coder")
+FALLBACK_MODEL = os.environ.get("ICC_NEWS_FALLBACK_MODEL", "gemini/gemini-3.7-flash")
 MAX_ITEMS_TOTAL = int(os.environ.get("ICC_NEWS_MAX_TOTAL_KEEP", "20"))
 MAX_NEW_PER_RUN = int(os.environ.get("ICC_NEWS_MAX_NEW_PER_RUN", "3"))
 # Max age a news item can have (months). Applied to NEW items only — historical
@@ -54,9 +55,9 @@ def months_ago(ym: tuple[int, int], now: datetime | None = None) -> int:
 
 def call_llm(system: str, user: str, *, temperature: float = 0.3,
              max_tokens: int = 4000, retries: int = 2,
-             timeout: int = 240) -> str:
+             timeout: int = 240, model: str | None = None) -> str:
     payload = {
-        "model": MODEL,
+        "model": model or MODEL,
         "temperature": temperature,
         "max_tokens": max_tokens,
         "messages": [
@@ -211,10 +212,14 @@ def synthesise_news(research_raw: dict) -> list[dict]:
     parsed = None
     last_err: Exception | None = None
     synthesis_started = time.monotonic()
+    # Attempt 1: crow agent default model (coder). Attempt 2: proven fallback
+    # (coder can stall on large prompts; gemini flash completed in 5-7s in tests).
+    synth_models = [MODEL, FALLBACK_MODEL]
     for attempt in range(2):
         try:
             raw = call_llm(
-                system, user, temperature=0.3, max_tokens=2000, retries=1
+                system, user, temperature=0.3, max_tokens=2000, retries=1,
+                model=synth_models[attempt],
             )
             if not raw.strip():
                 raise ValueError("empty LLM response")

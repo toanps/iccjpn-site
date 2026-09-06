@@ -3,7 +3,7 @@
 #
 # Pipeline:
 #   1. deep-research raw data collection across multiple foreigner-in-Japan queries
-#   2. LLM (9router/bestmay) synthesises into news-card items (Japanese)
+#   2. LLM (9router, crow default coder) synthesises into news-card items (Japanese)
 #   3. Inject into ~/projects/iccjpn-site/news.html (backup + dedupe + prune)
 #   4. git add/commit/push → Cloudflare Pages auto-deploys
 #
