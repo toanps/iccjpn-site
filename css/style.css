@@ -449,6 +449,10 @@ ul, ol {
     gap: var(--spacing-lg);
 }
 
+.services-grid--four {
+    grid-template-columns: repeat(4, 1fr);
+}
+
 .service-card {
     background-color: var(--color-white);
     padding: var(--spacing-lg);
@@ -1630,5 +1634,41 @@ ul, ol {
     
     .stat-number-lg {
         font-size: 2.5rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Offshore IT Section
+   -------------------------------------------------------------------------- */
+.offshore-intro {
+    max-width: 52rem;
+    margin: 0 auto var(--spacing-xl);
+    text-align: center;
+}
+
+.offshore-intro p {
+    color: var(--color-gray-700);
+    font-size: 1.0625rem;
+    line-height: 1.9;
+}
+
+.offshore-cta {
+    margin-top: var(--spacing-xl);
+    text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .offshore-intro p {
+        font-size: 1rem;
+    }
+
+    .services-grid--four {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .services-grid--four {
+        grid-template-columns: 1fr;
     }
 }
