@@ -28,7 +28,7 @@ NEWS_HTML = SITE_ROOT / "news.html"
 LLM_URL = os.environ.get("ICC_NEWS_LLM_URL", "http://127.0.0.1:20128/v1/chat/completions")
 LLM_KEY = os.environ.get("ICC_NEWS_LLM_KEY", "not-needed")
 MODEL = os.environ.get("ICC_NEWS_MODEL", "coder")
-FALLBACK_MODEL = os.environ.get("ICC_NEWS_FALLBACK_MODEL", "gemini/gemini-3.7-flash")
+FALLBACK_MODEL = os.environ.get("ICC_NEWS_FALLBACK_MODEL", "bestsep")
 MAX_ITEMS_TOTAL = int(os.environ.get("ICC_NEWS_MAX_TOTAL_KEEP", "20"))
 MAX_NEW_PER_RUN = int(os.environ.get("ICC_NEWS_MAX_NEW_PER_RUN", "3"))
 # Max age a news item can have (months). Applied to NEW items only — historical
@@ -212,10 +212,14 @@ def synthesise_news(research_raw: dict) -> list[dict]:
     parsed = None
     last_err: Exception | None = None
     synthesis_started = time.monotonic()
-    # Attempt 1: crow agent default model (coder). Attempt 2: proven fallback
-    # (coder can stall on large prompts; gemini flash completed in 5-7s in tests).
-    synth_models = [MODEL, FALLBACK_MODEL]
-    for attempt in range(2):
+    # Attempt 1: crow agent default model (coder).
+    # Attempt 2: 9router combo bestsep (sur/deepseek-v4.1-flash + sur/glm-5.3-flash).
+    # Attempt 3: gemini/gemini-3.7-flash — required safety net: as of 2026-10-01 the
+    #   sur/* upstream behind bestsep/bestjun/coder-ju/bestmay/4codex returns
+    #   "gateway_timeout" on any non-trivial payload, so the combo alone cannot
+    #   complete a synthesis run.
+    synth_models = [MODEL, FALLBACK_MODEL, "gemini/gemini-3.7-flash"]
+    for attempt in range(len(synth_models)):
         try:
             raw = call_llm(
                 system, user, temperature=0.3, max_tokens=2000, retries=1,
@@ -236,12 +240,14 @@ def synthesise_news(research_raw: dict) -> list[dict]:
             break
         except Exception as exc:  # noqa: BLE001
             last_err = exc
-            print(f"[news-update] LLM parse attempt {attempt + 1}/2 failed: "
-                  f"{exc}", file=sys.stderr)
-            if attempt == 0:
+            print(f"[news-update] LLM parse attempt {attempt + 1}/{len(synth_models)} "
+                  f"failed ({synth_models[attempt]}): {exc}", file=sys.stderr)
+            if attempt < len(synth_models) - 1:
                 time.sleep(2)
     if parsed is None:
-        raise RuntimeError(f"LLM synthesis failed 2× — last error: {last_err}")
+        raise RuntimeError(
+            f"LLM synthesis failed {len(synth_models)}× — last error: {last_err}"
+        )
 
     cleaned: list[dict] = []
     dropped_old = 0
