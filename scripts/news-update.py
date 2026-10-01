@@ -27,13 +27,16 @@ SITE_ROOT = Path(os.environ.get("ICC_SITE_ROOT", Path.home() / "projects/iccjpn-
 NEWS_HTML = SITE_ROOT / "news.html"
 LLM_URL = os.environ.get("ICC_NEWS_LLM_URL", "http://127.0.0.1:20128/v1/chat/completions")
 LLM_KEY = os.environ.get("ICC_NEWS_LLM_KEY", "not-needed")
-MODEL = os.environ.get("ICC_NEWS_MODEL", "coder")
+MODEL = os.environ.get("ICC_NEWS_MODEL", "gemini/gemini-3.8-flash")
 FALLBACK_MODEL = os.environ.get("ICC_NEWS_FALLBACK_MODEL", "bestsep")
 MAX_ITEMS_TOTAL = int(os.environ.get("ICC_NEWS_MAX_TOTAL_KEEP", "20"))
 MAX_NEW_PER_RUN = int(os.environ.get("ICC_NEWS_MAX_NEW_PER_RUN", "3"))
 # Max age a news item can have (months). Applied to NEW items only — historical
 # entries in news.html are left untouched.
 MAX_AGE_MONTHS = int(os.environ.get("ICC_NEWS_MAX_AGE_MONTHS", "3"))
+# Synthesis output budget. 2000 was too small: gemini-* models truncate mid-array
+# ("unclosed '[' in LLM response") and the run fails all three attempts.
+MAX_SYNTH_TOKENS = int(os.environ.get("ICC_NEWS_MAX_SYNTH_TOKENS", "4000"))
 
 LIST_OPEN = '<div class="news-list">'
 LIST_CLOSE_MARKER = '<!-- news-list-end -->'
@@ -212,17 +215,18 @@ def synthesise_news(research_raw: dict) -> list[dict]:
     parsed = None
     last_err: Exception | None = None
     synthesis_started = time.monotonic()
-    # Attempt 1: crow agent default model (coder).
+    # Attempt 1: gemini/gemini-3.8-flash — as of 2026-10-01 this is the only model
+    #   that returns a valid array on the real research payload. The sur/* upstream
+    #   behind coder/bestsep/bestjun/coder-ju/bestmay/4codex answers with an SSE
+    #   error envelope ("empty content in LLM response"), and gemini/gemini-3.7-flash
+    #   is returning HTTP 503.
     # Attempt 2: 9router combo bestsep (sur/deepseek-v4.1-flash + sur/glm-5.3-flash).
-    # Attempt 3: gemini/gemini-3.7-flash — required safety net: as of 2026-10-01 the
-    #   sur/* upstream behind bestsep/bestjun/coder-ju/bestmay/4codex returns
-    #   "gateway_timeout" on any non-trivial payload, so the combo alone cannot
-    #   complete a synthesis run.
-    synth_models = [MODEL, FALLBACK_MODEL, "gemini/gemini-3.7-flash"]
+    # Attempt 3: crow agent default model (coder).
+    synth_models = [MODEL, FALLBACK_MODEL, "coder"]
     for attempt in range(len(synth_models)):
         try:
             raw = call_llm(
-                system, user, temperature=0.3, max_tokens=2000, retries=1,
+                system, user, temperature=0.3, max_tokens=MAX_SYNTH_TOKENS, retries=1,
                 model=synth_models[attempt],
             )
             if not raw.strip():
