@@ -86,7 +86,7 @@ research_sh, angles, count, output_dir, discord_flag = sys.argv[2:7]
 cmd = [
     "bash", research_sh, "外国人労働者 日本 最新ニュース",
     "--angles", angles,
-    "--sources", "brave,bird",
+    "--sources", "web,bird",
     "--count", count,
     "--output", output_dir,
 ]
