@@ -78,15 +78,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    window.addEventListener('scroll', toggleBackToTop, { passive: true });
-    
-    backToTopBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+    if (backToTopBtn) {
+        window.addEventListener('scroll', toggleBackToTop, { passive: true });
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
-    });
+    }
     
     // ==========================================================================
     // Smooth Scroll for Anchor Links
