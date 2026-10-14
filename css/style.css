@@ -1770,22 +1770,14 @@ ul, ol {
 }
 
 .vi-grid-2,
-.vi-grid-3,
 .vi-grid-4,
 .vi-hero-stats,
-.vi-form-grid,
-.vi-company-meta,
-.vi-review-scores {
+.vi-form-grid {
     display: grid;
 }
 
 .vi-grid-2 {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-lg);
-}
-
-.vi-grid-3 {
-    grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-lg);
 }
 
@@ -1814,27 +1806,6 @@ ul, ol {
 .vi-card-icon {
     margin-bottom: var(--spacing-sm);
     font-size: 2rem;
-}
-
-.vi-badge,
-.vi-badge-muted {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: var(--spacing-sm);
-    padding: 0.25rem 0.65rem;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-.vi-badge {
-    color: var(--color-primary);
-    background: rgba(218, 37, 29, 0.08);
-}
-
-.vi-badge-muted {
-    color: var(--color-gray-700);
-    background: var(--color-gray-100);
 }
 
 .vi-note {
@@ -1923,11 +1894,6 @@ ul, ol {
     font-size: 0.9rem;
 }
 
-.vi-actions-center {
-    margin-top: var(--spacing-lg);
-    text-align: center;
-}
-
 .vi-contact-card + .vi-contact-card {
     margin-top: var(--spacing-md);
 }
@@ -1962,36 +1928,113 @@ ul, ol {
     font-size: 0.9rem;
 }
 
-.vi-filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-lg);
+.vi-map-wrap {
+    position: relative;
+    max-width: 560px;
+    margin: 0 auto;
 }
 
-.vi-filter-bar select {
-    padding: 0.65rem 0.9rem;
-    border: 1px solid var(--color-gray-300);
-    border-radius: var(--radius-md);
+.vi-map-img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
-.vi-filter-btn {
-    padding: 0.65rem 1rem;
-    color: var(--color-gray-700);
-    background: var(--color-white);
-    border: 1px solid var(--color-gray-300);
-    border-radius: var(--radius-full);
+.vi-map-markers {
+    position: absolute;
+    inset: 0;
+}
+
+.vi-marker {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .35);
     cursor: pointer;
+    padding: 0;
 }
 
-.vi-filter-btn.is-active {
-    color: var(--color-white);
-    border-color: var(--color-primary);
+.vi-marker--good {
     background: var(--color-primary);
 }
 
-.vi-company-card {
-    margin-bottom: var(--spacing-lg);
+.vi-marker--bad {
+    background: #111;
+}
+
+.vi-map-popup {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    z-index: 5;
+    width: 220px;
+    padding: var(--spacing-sm);
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    font-size: 0.85rem;
+    display: none;
+}
+
+.vi-map-popup.is-open {
+    display: block;
+}
+
+.vi-map-popup h3 {
+    margin-bottom: 0.3rem;
+    color: var(--color-dark);
+    font-size: 0.95rem;
+}
+
+.vi-map-popup p {
+    margin-bottom: 0.3rem;
+    color: var(--color-gray-700);
+}
+
+.vi-map-note {
+    margin-top: var(--spacing-sm);
+    text-align: center;
+    color: var(--color-gray-600);
+    font-size: 0.85rem;
+}
+
+.vi-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.vi-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-gray-700);
+}
+
+.vi-legend-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.vi-legend-dot--good {
+    background: var(--color-primary);
+}
+
+.vi-legend-dot--bad {
+    background: #111;
+}
+
+.vi-companies {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+.vi-company {
     padding: var(--spacing-lg);
     background: var(--color-white);
     border: 1px solid var(--color-gray-200);
@@ -1999,113 +2042,41 @@ ul, ol {
     box-shadow: var(--shadow-sm);
 }
 
-.vi-company-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
-}
-
-.vi-company-header h3 {
+.vi-company h3 {
+    margin-bottom: 0.3rem;
     color: var(--color-dark);
 }
 
-.vi-company-meta {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-lg);
-}
-
-.vi-company-meta div {
-    padding: var(--spacing-sm);
-    background: var(--bg-light);
-    border-radius: var(--radius-md);
-}
-
-.vi-company-meta strong {
-    display: block;
-    margin-bottom: 0.2rem;
+.vi-company-location {
+    margin-bottom: var(--spacing-sm);
     color: var(--color-gray-600);
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
-.vi-company-meta span {
-    color: var(--color-dark);
-    font-weight: 500;
-}
-
-.vi-rating {
-    display: flex;
-    flex-wrap: wrap;
+.vi-company-badge {
+    display: inline-flex;
     align-items: center;
-    gap: var(--spacing-xs);
-    color: var(--color-dark);
+    margin-bottom: var(--spacing-sm);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full);
+    color: var(--color-white);
+    font-size: 0.75rem;
     font-weight: 700;
 }
 
-.vi-rating-stars {
-    color: var(--color-accent);
-    letter-spacing: 0.1em;
+.vi-company-badge--good {
+    background: var(--color-primary);
 }
 
-.vi-review {
-    margin-bottom: var(--spacing-md);
-    padding: var(--spacing-md);
-    background: var(--bg-light);
-    border: 1px solid var(--color-gray-200);
-    border-radius: var(--radius-md);
+.vi-company-badge--bad {
+    background: #111;
 }
 
-.vi-review-head,
-.vi-rating {
-    display: flex;
-}
-
-.vi-review-head {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--spacing-xs);
-    margin-bottom: var(--spacing-sm);
-}
-
-.vi-review-scores {
-    grid-template-columns: repeat(5, minmax(140px, 1fr));
-    gap: var(--spacing-xs);
-    margin-bottom: var(--spacing-sm);
-}
-
-.vi-review-scores div {
-    padding: 0.5rem;
-    background: var(--color-white);
-    border-radius: var(--radius-sm);
-    font-size: 0.85rem;
-}
-
-.vi-review-pros,
-.vi-review-cons {
-    margin-bottom: var(--spacing-xs);
-}
-
-.vi-review-pros strong {
-    color: var(--color-primary);
-}
-
-.vi-review-cons strong {
-    color: var(--color-gray-700);
-}
-
-.vi-lang-switch {
-    display: inline-flex;
-    align-items: center;
-    margin-right: var(--spacing-sm);
-    padding: 0.3rem 0.75rem;
-    border: 1px solid var(--color-gray-300);
-    border-radius: var(--radius-full);
+.vi-company-note {
+    margin-top: var(--spacing-sm);
+    color: var(--color-gray-600);
     font-size: 0.8rem;
-    font-weight: 500;
-    white-space: nowrap;
+    font-style: italic;
 }
 
 .vi-footer {
@@ -2138,11 +2109,8 @@ ul, ol {
 }
 
 @media (max-width: 1024px) {
-    .vi-grid-3,
     .vi-grid-4,
-    .vi-steps,
-    .vi-company-meta,
-    .vi-review-scores {
+    .vi-steps {
         grid-template-columns: repeat(2, 1fr);
     }
 }
@@ -2155,28 +2123,20 @@ ul, ol {
 
     .vi-hero-stats,
     .vi-grid-2,
-    .vi-grid-3,
     .vi-grid-4,
     .vi-form-grid,
-    .vi-steps,
-    .vi-company-meta,
-    .vi-review-scores {
+    .vi-steps {
         grid-template-columns: 1fr;
     }
 
     .vi-hero-cta,
-    .vi-hero-cta .btn,
-    .vi-filter-bar .btn {
+    .vi-hero-cta .btn {
         width: 100%;
     }
-}
 
-.vi-empty {
-    margin: var(--spacing-lg) 0;
-    padding: var(--spacing-md);
-    border: 1px dashed var(--color-gray-400);
-    border-radius: var(--radius-md);
-    background: var(--color-gray-100);
-    color: var(--color-gray-700);
-    text-align: center;
+    .vi-map-popup {
+        position: static;
+        width: 100%;
+        margin-top: var(--spacing-sm);
+    }
 }

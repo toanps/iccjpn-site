@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=20261014a">
+  <link rel="stylesheet" href="/css/style.css?v=20261014b">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-J0CHSYTLVM"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -36,7 +36,6 @@
           <span class="logo-text">ICC JAPAN</span>
         </a>
         <div class="vi-header-actions">
-          <a class="vi-lang-switch" href="/">日本語</a>
           <button class="mobile-menu-btn" aria-label="Mở menu" id="mobileMenuBtn">
             <span></span><span></span><span></span>
           </button>
@@ -45,7 +44,6 @@
           <ul class="nav-list">
             <li><a href="/vi/">Trang chủ</a></li>
             <li><a href="/vi/dang-ky" aria-current="page">Đăng ký tìm việc</a></li>
-            <li><a href="/vi/danh-gia">Đánh giá công ty</a></li>
             <li><a href="/vi/#lien-he" class="btn btn-primary">Liên hệ</a></li>
           </ul>
         </nav>
@@ -68,10 +66,12 @@
 
     <section class="vi-section">
       <div class="container">
+        <!-- TODO(Toan): the Formspree form xqedlvnl delivers to thucao@iccjpn.com. To deliver the /vi forms to lienhe@iccjpn.com, change the recipient in the Formspree dashboard (or give Crow a new form ID and change the action here). -->
         <form class="contact-form vi-form" action="https://formspree.io/f/xqedlvnl" method="POST">
           <input type="hidden" name="_subject" value="【ICC JAPAN・VI】Đăng ký tìm việc">
           <input type="hidden" name="_next" value="https://iccjpn.com/vi/cam-on?type=dang-ky">
           <input type="text" name="_gotcha" style="display:none">
+          <input type="hidden" name="send_to" value="lienhe@iccjpn.com">
 
           <section class="vi-form-section">
             <h2>1. Thông tin cá nhân</h2>
@@ -102,8 +102,8 @@
                 <input type="tel" id="phone" name="phone" required placeholder="Số đang sử dụng">
               </div>
               <div class="form-group">
-                <label for="email">Email <span class="required">*</span></label>
-                <input type="email" id="email" name="email" required placeholder="ten@example.com">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="ten@example.com">
               </div>
               <div class="form-group">
                 <label for="current_country">Nơi đang ở</label>
@@ -197,6 +197,10 @@
                 <input type="text" id="desired_prefecture" name="desired_prefecture" placeholder="Ví dụ: Osaka, Aichi hoặc nơi nào cũng được">
               </div>
               <div class="form-group">
+                <label for="desired_location">Nơi muốn làm việc (tỉnh/thành tại Nhật)</label>
+                <input type="text" id="desired_location" name="desired_location" placeholder="Ví dụ: Aichi, Osaka, Tokyo, hoặc &quot;không yêu cầu&quot;">
+              </div>
+              <div class="form-group">
                 <label for="desired_salary">Mức lương mong muốn</label>
                 <input type="text" id="desired_salary" name="desired_salary" placeholder="Ví dụ: 20万円/tháng">
               </div>
@@ -234,11 +238,11 @@
           <section class="vi-form-section">
             <div class="form-group form-checkbox">
               <input type="checkbox" id="consent" name="consent" required>
-              <label for="consent">Tôi đồng ý để ICC JAPAN thu thập và sử dụng thông tin cá nhân cho mục đích tư vấn và giới thiệu việc làm, và đồng ý với việc ICC liên hệ qua điện thoại/Zalo/email. <span class="required">*</span></label>
+              <label for="consent">Tôi đồng ý để ICC JAPAN thu thập và sử dụng thông tin cá nhân cho mục đích tư vấn và giới thiệu việc làm, và đồng ý với việc ICC liên hệ qua điện thoại hoặc Zalo. <span class="required">*</span></label>
             </div>
-            <p class="vi-privacy-note">Thông tin của bạn chỉ được dùng cho mục đích giới thiệu việc làm và không chia sẻ cho bên thứ ba ngoài công ty tuyển dụng. Bạn có thể yêu cầu xóa thông tin bằng email tới thucao@iccjpn.com.</p>
+            <p class="vi-privacy-note">Thông tin của bạn chỉ được dùng cho mục đích giới thiệu việc làm và không chia sẻ cho bên thứ ba ngoài công ty tuyển dụng. Bạn có thể yêu cầu xóa thông tin bằng email tới lienhe@iccjpn.com.</p>
             <button type="submit" class="btn btn-primary btn-lg btn-block">Gửi đăng ký</button>
-            <p class="vi-form-help">Bạn nên gửi kèm CV (tiếng Việt hoặc tiếng Nhật) tới thucao@iccjpn.com. ICC sẽ liên hệ trong 2–3 ngày làm việc.</p>
+            <p class="vi-form-help">Bạn nên gửi kèm CV (tiếng Việt hoặc tiếng Nhật) tới lienhe@iccjpn.com. ICC sẽ liên hệ trong 2–3 ngày làm việc.</p>
           </section>
         </form>
       </div>
@@ -255,15 +259,14 @@
         <div class="footer-links">
           <div class="footer-column">
             <h4>Tiếng Việt</h4>
-            <ul><li><a href="/vi/">Trang chủ</a></li><li><a href="/vi/dang-ky">Đăng ký tìm việc</a></li><li><a href="/vi/danh-gia">Đánh giá công ty</a></li></ul>
+            <ul><li><a href="/vi/">Trang chủ</a></li><li><a href="/vi/dang-ky">Đăng ký tìm việc</a></li></ul>
           </div>
-          <div class="footer-column"><h4>Ngôn ngữ</h4><ul><li><a href="/">日本語</a></li></ul></div>
         </div>
       </div>
       <div class="footer-bottom"><p>© 2025 株式会社ICC JAPAN</p><p>有料職業紹介事業許可番号 27-ユ-302779</p></div>
     </div>
   </footer>
   <a href="#" class="back-to-top" id="backToTop" aria-label="Lên đầu trang">↑</a>
-  <script src="/js/main.js?v=20261014a" defer></script>
+  <script src="/js/main.js?v=20261014b" defer></script>
 </body>
 </html>
